@@ -18,9 +18,10 @@ class Channel(models.Model):
 class User(models.Model):
     fullName = models.CharField(max_length=100)
     email = models.CharField(max_length=100)
+    password = models.CharField(max_length=100)
     createdDate = models.DateTimeField('created_date', null=False, default=datetime.datetime.now())
     updatedDate = models.DateTimeField('updated_date', null=False, default=datetime.datetime.now())
-    token = models.CharField(max_length=100)
+    token = models.CharField(max_length=100,null=True)
     isAdmin = models.BooleanField(default=False,name='is_admin')
     tokenExpiredOn = models.DateTimeField('token_expired_on', null=True, blank=True)
 
