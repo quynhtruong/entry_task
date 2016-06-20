@@ -41,6 +41,7 @@ class Event(models.Model):
     startDate = models.DateTimeField('start_date', null=False, default=datetime.datetime.now())
     endDate = models.DateTimeField('end_date', null=False, default=datetime.datetime.now())
     channel = models.ForeignKey(Channel, null=False)
+    creator = models.ForeignKey(User)
 
     def __unicode__(self):
         return self.name
