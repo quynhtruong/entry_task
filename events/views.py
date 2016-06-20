@@ -3,6 +3,8 @@ from django.http import HttpResponse
 from django.shortcuts import render
 from models import Event
 from models import User
+from models import Participant
+from models import Like
 import time
 import json
 import os
@@ -14,6 +16,10 @@ queryTemplate = ''
 def list_all(request):
     # capture all parameters
     token = request.GET['token']
+    currentUser = User.objects.get(token=token)
+    listIdList = []
+    for like in Like.objects.filter(user=currentUser):
+        listIdList.append(like.event.id)
     pageSize = 20
     pageIndex = 0
     channelId = None
@@ -67,6 +73,10 @@ def list_all(request):
         responseData['creatorId'] = event.owner_id
         responseData['creatorName'] = event.owner_name
         responseData['creatorAvatarId'] = event.owner_avatar_id
+        if event.id in listIdList:
+            responseData['isLiked']  = True
+        else:
+            responseData['isLiked'] = False
         if event.startDate >= now:
             responseData['isGoing'] = True
         else:
