@@ -60,7 +60,7 @@ WSGI_APPLICATION = 'entry_task.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'entry_task',
+        'NAME': 'entry_task_2',
         'USER': 'root',
         'PASSWORD': 'root',
         'HOST': '127.0.0.1',

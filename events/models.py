@@ -24,6 +24,7 @@ class User(models.Model):
     token = models.CharField(max_length=100,null=True)
     isAdmin = models.BooleanField(db_column='is_admin',default=False)
     tokenExpiredOn = models.DateTimeField(db_column='token_expired_on', null=True, blank=True)
+    avatarId  = models.CharField(db_column='avatar_id', null=True, blank=True,max_length=100)
 
     def __unicode__(self):
         return self.name
@@ -42,6 +43,7 @@ class Event(models.Model):
     endDate = models.DateTimeField(db_column='end_date', null=False, default=datetime.datetime.now())
     channel = models.ForeignKey(Channel, null=False)
     creator = models.ForeignKey(User)
+    avatarId = models.CharField(db_column='avatar_id', null=True, blank=True, max_length=100)
 
     def __unicode__(self):
         return self.name
@@ -82,6 +84,7 @@ class Comment(models.Model):
     user = models.ForeignKey(User)
     event = models.ForeignKey(Event)
     mainComment = models.ForeignKey('self', null=True, db_column='main_comment')
+    content = models.CharField(max_length=300)
 
     def __unicode__(self):
         return self.name
