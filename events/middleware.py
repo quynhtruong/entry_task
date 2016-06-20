@@ -13,7 +13,8 @@ class AuthenticationMiddleware(object):
     def process_request(self, request):
         # if login or signup --> pass through the url
         if 'signup' in request.get_full_path() \
-                or 'login' in request.get_full_path():
+                or 'login' in request.get_full_path() \
+                    or 'documents' in request.get_full_path:
             return None
         token = None
         if request.method == 'GET':

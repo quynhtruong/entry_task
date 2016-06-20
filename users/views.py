@@ -31,11 +31,5 @@ def login(request):
                 user.token_expired_on = datetime.now() + timedelta(hours=24)
                 user.save()
             # generate json response
-            response_data = {}
-            response_data['email'] = user.email
-            response_data['password'] = user.password
-            response_data['token'] = user.token
-            response_data['fullName'] = user.full_name
-            response_data['tokenExpiredOn'] = time.mktime(user.token_expired_on.timetuple())
-
+            response_data = user.to_json()
             return HttpResponse(json.dumps(response_data), status=200, content_type="application/json")

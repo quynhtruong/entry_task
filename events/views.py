@@ -15,23 +15,18 @@ query_template = ''
 
 # Create your views here.
 def list_all(request):
-    # capture all parameters
-    token = request.GET['token']
+
+    token = request.GET.get('token')
     current_user = User.objects.get(token=token)
     list_id_list = []
     for like in Like.objects.filter(user=current_user):
         list_id_list.append(like.event.id)
-    channel_id = None
     start_date = None
     end_date = None
+    # capture all parameters
     page_index = request.GET.get('page_index', 0)
     page_size = request.GET.get('page_size',20)
-    if 'page_index' in request.GET:
-        page_index = request.GET['page_index']
-    if 'page_size' in request.GET:
-        page_size = request.GET['page_size']
-    if 'channel_id' in request.GET:
-        channel_id = request.GET['channel_id']
+    channel_id = request.GET.get('channel_id')
     if 'start_date' in request.GET:
         start_date = datetime.fromtimestamp((float)(request.GET['start_date'].__str__())).strftime('%Y-%m-%d %H:%M:%S')
     if 'end_date' in request.GET:
@@ -59,18 +54,10 @@ def list_all(request):
 
     response_data_list = []
     for event in event_list:
-        response_data = {}
-        response_data['id'] = event.id
-        response_data['title'] = event.title
-        response_data['start_date'] = time.mktime(event.start_date.timetuple())
-        response_data['end_date'] = time.mktime(event.end_date.timetuple())
-        response_data['created_ate'] = time.mktime(event.created_date.timetuple())
-        response_data['description'] = event.description
-        response_data['avatar_id'] = event.avatar_id
-
+        response_data = event.to_json()
+        # extra info
         response_data['channel_name'] = event.channel_name
         response_data['channel_id'] = event.channel_id
-
         response_data['owner_id'] = event.owner_id
         response_data['owner_name'] = event.owner_name
         response_data['owner_avatar_id'] = event.owner_avatar_id
@@ -101,12 +88,6 @@ def list_participant(request):
 
     for participant in Participant.objects.filter(event=event):
         user = participant.user
-        response_data = {}
-        response_data['email'] = user.email
-        response_data['password'] = user.password
-        response_data['token'] = user.token
-        response_data['full_name'] = user.full_name
-        response_data['token_expired_on'] = time.mktime(user.token_expired_on.timetuple())
-        response_data_list.append(response_data)
+        response_data_list.append(user.to_json())
 
     return HttpResponse(json.dumps(response_data_list), status=200, content_type="application/json")
