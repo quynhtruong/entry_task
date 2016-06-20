@@ -8,12 +8,12 @@ from events.models import  Channel
 
 def list(request):
 
-    responseDataList = []
+    response_data_list = []
     for channel in Channel.objects.all():
-        responseData  = {}
-        responseData['id'] = channel.id
-        responseData['name'] = channel.name
-        responseData['createdDate'] = time.mktime(channel.createdDate.timetuple())
-        responseData['updatedDate'] = time.mktime(channel.updatedDate.timetuple())
-        responseDataList.append(responseData)
-    return HttpResponse(json.dumps(responseDataList), content_type="application/json")
+        response_data  = {}
+        response_data['id'] = channel.id
+        response_data['name'] = channel.name
+        response_data['createdDate'] = time.mktime(channel.created_date.timetuple())
+        response_data['updatedDate'] = time.mktime(channel.updated_date.timetuple())
+        response_data_list.append(response_data)
+    return HttpResponse(json.dumps(response_data_list), content_type="application/json")

@@ -33,7 +33,7 @@ class AuthenticationMiddleware(object):
             else:
                 # if token expired, not pass
                 now = timezone.make_aware(datetime.now(), timezone.get_current_timezone())
-                if users[0].tokenExpiredOn < now:
+                if users[0].token_expired_on < now:
                     return HttpResponse(json.dumps({'error': constants.TOKEN_NOT_FOUND_OR_EXPIRED}), status=403,
                                         content_type="application/json")
 

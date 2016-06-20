@@ -26,16 +26,16 @@ def login(request):
             user = users[0]
             now = timezone.make_aware(datetime.now(), timezone.get_current_timezone())
             # if token has been expired, active new one
-            if user.token == '' or user.tokenExpiredOn is None or user.tokenExpiredOn < now:
+            if user.token == '' or user.token_expired_on is None or user.token_expired_on < now:
                 user.token = uuid.uuid4().__str__()
-                user.tokenExpiredOn = datetime.now() + timedelta(hours=24)
+                user.token_expired_on = datetime.now() + timedelta(hours=24)
                 user.save()
             # generate json response
-            responseData = {}
-            responseData['email'] = user.email
-            responseData['password'] = user.password
-            responseData['token'] = user.token
-            responseData['fullName'] = user.fullName
-            responseData['tokenExpiredOn'] = time.mktime(user.tokenExpiredOn.timetuple())
+            response_data = {}
+            response_data['email'] = user.email
+            response_data['password'] = user.password
+            response_data['token'] = user.token
+            response_data['fullName'] = user.full_name
+            response_data['tokenExpiredOn'] = time.mktime(user.token_expired_on.timetuple())
 
-            return HttpResponse(json.dumps(responseData), status=200, content_type="application/json")
+            return HttpResponse(json.dumps(response_data), status=200, content_type="application/json")

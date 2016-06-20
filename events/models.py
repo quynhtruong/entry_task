@@ -4,8 +4,8 @@ import datetime
 
 # Create your models here.
 class Channel(models.Model):
-    createdDate = models.DateTimeField(db_column='created_date', null=False, default=datetime.datetime.now())
-    updatedDate = models.DateTimeField(db_column='updated_date', null=False, default=datetime.datetime.now())
+    created_date = models.DateTimeField(null=False, default=datetime.datetime.now())
+    updated_date = models.DateTimeField(null=False, default=datetime.datetime.now())
     name = models.CharField(max_length=100)
 
     def __unicode__(self):
@@ -16,15 +16,15 @@ class Channel(models.Model):
 
 
 class User(models.Model):
-    createdDate = models.DateTimeField(db_column='created_date', null=False, default=datetime.datetime.now())
-    updatedDate = models.DateTimeField(db_column='updated_date', null=False, default=datetime.datetime.now())
-    fullName = models.CharField(db_column='full_name',max_length=100)
+    created_date = models.DateTimeField(null=False, default=datetime.datetime.now())
+    updated_date = models.DateTimeField(null=False, default=datetime.datetime.now())
+    full_name = models.CharField(max_length=100)
     email = models.CharField(max_length=100)
     password = models.CharField(max_length=100)
     token = models.CharField(max_length=100,null=True)
-    isAdmin = models.BooleanField(db_column='is_admin',default=False)
-    tokenExpiredOn = models.DateTimeField(db_column='token_expired_on', null=True, blank=True)
-    avatarId  = models.CharField(db_column='avatar_id', null=True, blank=True,max_length=100)
+    is_admin = models.BooleanField(default=False)
+    token_expired_on = models.DateTimeField(null=True, blank=True)
+    avatar_id  = models.CharField(null=True, blank=True, max_length=100)
 
     def __unicode__(self):
         return self.name
@@ -34,16 +34,16 @@ class User(models.Model):
 
 
 class Event(models.Model):
-    createdDate = models.DateTimeField(db_column='created_date', null=False, default=datetime.datetime.now())
-    updatedDate = models.DateTimeField(db_column='updated_date', null=False, default=datetime.datetime.now())
+    created_date = models.DateTimeField(null=False, default=datetime.datetime.now())
+    updated_date = models.DateTimeField(null=False, default=datetime.datetime.now())
     title = models.CharField(max_length=100)
     description = models.CharField(max_length=300)
     location = models.CharField(max_length=300)
-    startDate = models.DateTimeField(db_column='start_date', null=False, default=datetime.datetime.now())
-    endDate = models.DateTimeField(db_column='end_date', null=False, default=datetime.datetime.now())
+    start_date = models.DateTimeField(null=False, default=datetime.datetime.now())
+    end_date = models.DateTimeField(null=False, default=datetime.datetime.now())
     channel = models.ForeignKey(Channel, null=False)
     creator = models.ForeignKey(User)
-    avatarId = models.CharField(db_column='avatar_id', null=True, blank=True, max_length=100)
+    avatar_id = models.CharField(null=True, blank=True, max_length=100)
 
     def __unicode__(self):
         return self.name
@@ -53,8 +53,8 @@ class Event(models.Model):
 
 
 class Participant(models.Model):
-    createdDate = models.DateTimeField(db_column='created_date', null=False, default=datetime.datetime.now())
-    updatedDate = models.DateTimeField(db_column='updated_date', null=False, default=datetime.datetime.now())
+    created_date = models.DateTimeField(null=False, default=datetime.datetime.now())
+    updated_date = models.DateTimeField(null=False, default=datetime.datetime.now())
     user = models.ForeignKey(User)
     event = models.ForeignKey(Event)
 
@@ -66,8 +66,8 @@ class Participant(models.Model):
 
 
 class Like(models.Model):
-    createdDate = models.DateTimeField(db_column='created_date', null=False, default=datetime.datetime.now())
-    updatedDate = models.DateTimeField(db_column='updated_date', null=False, default=datetime.datetime.now())
+    created_date = models.DateTimeField(null=False, default=datetime.datetime.now())
+    updated_date = models.DateTimeField(null=False, default=datetime.datetime.now())
     user = models.ForeignKey(User)
     event = models.ForeignKey(Event)
 
@@ -79,11 +79,11 @@ class Like(models.Model):
 
 
 class Comment(models.Model):
-    createdDate = models.DateTimeField(db_column='created_date', null=False, default=datetime.datetime.now())
-    updatedDate = models.DateTimeField(db_column='updated_date', null=False, default=datetime.datetime.now())
+    created_date = models.DateTimeField(null=False, default=datetime.datetime.now())
+    updated_date = models.DateTimeField(null=False, default=datetime.datetime.now())
     user = models.ForeignKey(User)
     event = models.ForeignKey(Event)
-    mainComment = models.ForeignKey('self', null=True, db_column='main_comment')
+    main_comment = models.ForeignKey('self', null=True, db_column='main_comment')
     content = models.CharField(max_length=300)
 
     def __unicode__(self):
@@ -94,13 +94,13 @@ class Comment(models.Model):
 
 
 class Document(models.Model):
-    createdDate = models.DateTimeField(db_column='created_date', null=False, default=datetime.datetime.now())
-    updatedDate = models.DateTimeField(db_column='updated_date', null=False, default=datetime.datetime.now())
+    created_date = models.DateTimeField(null=False, default=datetime.datetime.now())
+    updated_date = models.DateTimeField(null=False, default=datetime.datetime.now())
     user = models.ForeignKey(User, null=True)
     event = models.ForeignKey(Event, null=True)
     name = models.CharField(max_length=100, null=True)
-    physicalId = models.CharField(db_column='physical_id',max_length=36)
-    isMain = models.BooleanField(db_column='is_main',default=False)
+    physical_id = models.CharField(max_length=36)
+    is_main = models.BooleanField(default=False)
 
     def __unicode__(self):
         return self.name

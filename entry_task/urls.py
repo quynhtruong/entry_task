@@ -11,4 +11,5 @@ urlpatterns = patterns('',
     url(r'^admin/', include(admin.site.urls)),
     url(r'^users/', include('users.urls')),
     url(r'^channels/', include('channels.urls')),
+    url(r'^documents/', include('documents.urls')),
 )
