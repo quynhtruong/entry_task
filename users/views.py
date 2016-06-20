@@ -16,6 +16,7 @@ def login(request):
     if request.method == 'POST':
         email = request.POST['email']
         password = request.POST['password']
+        # users = User.objects.raw('select u.id, count(DISTINCT c.id) as count_c from user_account_tab as u INNER JOIN comment_tab as c on c.user_id = u.id where u.email = %s and u.password = %s GROUP by u.id',[email,password])
         users = User.objects.filter(email=email, password=password)
         # user not found -> return error
         if not users.exists():
