@@ -27,7 +27,7 @@ def login(request):
             now = datetime.utcnow()
             now = now.replace(tzinfo=pytz.utc)
             # if token has been expired, active new one
-            if (user.token == '' or user.tokenExpiredOn == None or user.tokenExpiredOn < now):
+            if user.token == '' or user.tokenExpiredOn is None or user.tokenExpiredOn < now:
                 user.token = uuid.uuid4().__str__()
                 user.tokenExpiredOn = datetime.now() + timedelta(hours=24)
                 user.save()
