@@ -24,8 +24,7 @@ def login(request):
             return HttpResponse(json.dumps(constants.USER_NOT_FOUND), status=404, content_type="application/json")
         else:
             user = users[0]
-            now = datetime.utcnow()
-            now = now.replace(tzinfo=pytz.utc)
+            now = timezone.make_aware(datetime.now(), timezone.get_current_timezone())
             # if token has been expired, active new one
             if user.token == '' or user.tokenExpiredOn is None or user.tokenExpiredOn < now:
                 user.token = uuid.uuid4().__str__()
@@ -36,6 +35,7 @@ def login(request):
             responseData['email'] = user.email
             responseData['password'] = user.password
             responseData['token'] = user.token
+            responseData['fullName'] = user.fullName
             responseData['tokenExpiredOn'] = time.mktime(user.tokenExpiredOn.timetuple())
 
             return HttpResponse(json.dumps(responseData), status=200, content_type="application/json")
