@@ -10,6 +10,7 @@ import json
 import os
 from datetime import  datetime
 from django.utils import timezone
+from events import constants
 
 queryTemplate = ''
 # Create your views here.
@@ -86,5 +87,27 @@ def list_all(request):
 
         responseDataList.append(responseData)
     return HttpResponse(json.dumps(responseDataList), status=200, content_type="application/json")
+
+def listParticipant(request):
+    id = request.GET['id']
+    event = None
+    responseDataList = []
+    try:
+        event = Event.objects.get(id=id)
+    except Event.DoesNotExist:
+        return HttpResponse(json.dumps({'error':constants.EVENT_NOT_FOUND}), status=500, content_type="application/json")
+
+    for participant in Participant.objects.filter(event=event):
+        user  = participant.user
+        responseData = {}
+        responseData['email'] = user.email
+        responseData['password'] = user.password
+        responseData['token'] = user.token
+        responseData['fullName'] = user.fullName
+        responseData['tokenExpiredOn'] = time.mktime(user.tokenExpiredOn.timetuple())
+        responseDataList.append(responseData)
+
+    return HttpResponse(json.dumps(responseDataList), status=200, content_type="application/json")
+
 
 
